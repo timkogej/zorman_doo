@@ -67,15 +67,15 @@ const ImmersiveScrollGallery: React.FC<ImmersiveScrollGalleryProps> = ({
   const mScale25  = useTransform(scrollYProgress, [0, 1], [1, 2.5]);
   const mScale3   = useTransform(scrollYProgress, [0, 1], [1, 3]);
 
-  // Desktop timings — images fully gone BEFORE text appears (no overlap)
+  // Desktop: slike izginejo pri 0.55, besedilo pride pri 0.62 → ni prekrivanja
   const dOpacityImages  = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
   const dOpacityContent = useTransform(scrollYProgress, [0.62, 0.78], [0, 1]);
   const dScaleContent   = useTransform(scrollYProgress, [0.62, 0.78], [0.85, 1]);
 
-  // Mobile timings — images gone by 40%, text appears 48–62%
-  const mOpacityImages  = useTransform(scrollYProgress, [0, 0.40], [1, 0]);
-  const mOpacityContent = useTransform(scrollYProgress, [0.48, 0.62], [0, 1]);
-  const mScaleContent   = useTransform(scrollYProgress, [0.48, 0.62], [0.9, 1]);
+  // Mobile: slike izginejo pri 0.43, besedilo pride pri 0.50 → ni prekrivanja
+  const mOpacityImages  = useTransform(scrollYProgress, [0, 0.43], [1, 0]);
+  const mOpacityContent = useTransform(scrollYProgress, [0.50, 0.65], [0, 1]);
+  const mScaleContent   = useTransform(scrollYProgress, [0.50, 0.65], [0.9, 1]);
 
   const desktopScales = [scale4, scale5, scale6, scale5, scale6, scale8, scale9];
   const mobileScales  = [mScale2, mScale25, mScale3, mScale25, mScale3, mScale2, mScale25];
