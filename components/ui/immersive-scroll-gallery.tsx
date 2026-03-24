@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import React from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 
@@ -44,22 +44,47 @@ const ImmersiveScrollGallery: React.FC<ImmersiveScrollGalleryProps> = ({
   quote = DEFAULT_QUOTE,
 }) => {
   const container = useRef<HTMLDivElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    setIsMobile(window.innerWidth < 768);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: container,
     offset: ["start start", "end end"],
   });
 
+  // Desktop scales — original
   const scale4 = useTransform(scrollYProgress, [0, 1], [1, 4]);
   const scale5 = useTransform(scrollYProgress, [0, 1], [1, 5]);
   const scale6 = useTransform(scrollYProgress, [0, 1], [1, 6]);
   const scale8 = useTransform(scrollYProgress, [0, 1], [1, 8]);
   const scale9 = useTransform(scrollYProgress, [0, 1], [1, 9]);
-  const opacityImages = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const opacityContent = useTransform(scrollYProgress, [0.6, 0.8], [0, 1]);
-  const scaleContent = useTransform(scrollYProgress, [0.6, 0.8], [0.8, 1]);
 
-  const scales = [scale4, scale5, scale6, scale5, scale6, scale8, scale9];
+  // Mobile scales — smooth on phone GPU (max 2.5–3×)
+  const mScale2   = useTransform(scrollYProgress, [0, 1], [1, 2]);
+  const mScale25  = useTransform(scrollYProgress, [0, 1], [1, 2.5]);
+  const mScale3   = useTransform(scrollYProgress, [0, 1], [1, 3]);
+
+  // Desktop timings — original
+  const dOpacityImages  = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  const dOpacityContent = useTransform(scrollYProgress, [0.6, 0.8], [0, 1]);
+  const dScaleContent   = useTransform(scrollYProgress, [0.6, 0.8], [0.8, 1]);
+
+  // Mobile timings — appear earlier so iOS Safari address bar can't eat the window
+  // Section is h-[300vh] on mobile → total scroll = 200vh → at 0.5 = 100vh scrolled
+  const mOpacityImages  = useTransform(scrollYProgress, [0, 0.75], [1, 0]);
+  const mOpacityContent = useTransform(scrollYProgress, [0.5, 0.65], [0, 1]);
+  const mScaleContent   = useTransform(scrollYProgress, [0.5, 0.65], [0.9, 1]);
+
+  const desktopScales = [scale4, scale5, scale6, scale5, scale6, scale8, scale9];
+  const mobileScales  = [mScale2, mScale25, mScale3, mScale25, mScale3, mScale2, mScale25];
+
+  const scales        = isMobile ? mobileScales  : desktopScales;
+  const opacityImages = isMobile ? mOpacityImages  : dOpacityImages;
+  const opacityContent = isMobile ? mOpacityContent : dOpacityContent;
+  const scaleContent  = isMobile ? mScaleContent  : dScaleContent;
 
   const pictures = images.map((img, index) => ({
     ...img,
@@ -67,12 +92,14 @@ const ImmersiveScrollGallery: React.FC<ImmersiveScrollGalleryProps> = ({
   }));
 
   return (
-    <div ref={container} className={`relative h-[200vh] bg-white ${className}`}>
+    // h-[300vh] on mobile = more scroll room so text definitely appears
+    // h-[200vh] on desktop = original
+    <div ref={container} className={`relative bg-white h-[300vh] md:h-[200vh] ${className}`}>
       <div className="sticky top-0 h-[100vh] overflow-hidden">
         {pictures.map(({ src, scale }, index) => (
           <motion.div
             key={index}
-            style={{ scale, opacity: opacityImages, willChange: "transform, opacity" }}
+            style={{ scale, opacity: opacityImages }}
             className="absolute flex items-center justify-center w-full h-full top-0"
           >
             <div className={`relative ${IMAGE_STYLES[index % IMAGE_STYLES.length]}`}>
@@ -91,7 +118,7 @@ const ImmersiveScrollGallery: React.FC<ImmersiveScrollGalleryProps> = ({
 
         {/* Reveal text */}
         <motion.div
-          style={{ opacity: opacityContent, scale: scaleContent, willChange: "transform, opacity" }}
+          style={{ opacity: opacityContent, scale: scaleContent }}
           className="w-full h-full flex items-center justify-center max-w-3xl mx-auto px-8 relative"
         >
           <p className="text-[#0a0a0a]/90 text-xl md:text-3xl lg:text-4xl font-light text-center leading-relaxed tracking-tight">
