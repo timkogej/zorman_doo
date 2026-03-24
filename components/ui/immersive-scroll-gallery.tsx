@@ -35,15 +35,6 @@ const IMAGE_STYLES = [
   "w-[15vw] h-[15vh] top-[22.5vh] left-[25vw]",
 ];
 
-const MOBILE_IMAGE_STYLES = [
-  "w-[55vw] h-[28vh]",
-  "w-[48vw] h-[24vh] -top-[24vh] left-[4vw]",
-  "w-[38vw] h-[44vh] -top-[12vh] -left-[36vw]",
-  "w-[48vw] h-[24vh] left-[12vw]",
-  "w-[38vw] h-[24vh] top-[24vh] left-[4vw]",
-  "w-[44vw] h-[22vh] top-[22vh] -left-[36vw]",
-  "w-[28vw] h-[18vh] top-[18vh] left-[20vw]",
-];
 
 const DEFAULT_QUOTE =
   "Od zasebnih domov do poslovnih prostorov — vsak projekt izvedemo z enako mero natančnosti in skrbjo za kakovost.";
@@ -86,7 +77,6 @@ const ImmersiveScrollGallery: React.FC<ImmersiveScrollGalleryProps> = ({
   const desktopScales = [scale4, scale5, scale6, scale5, scale6, scale8, scale9];
   const mobileScales = [mScale2, mScale25, mScale3, mScale25, mScale3, mScale15, mScale2];
   const scales = isMobile ? mobileScales : desktopScales;
-  const imageStyles = isMobile ? MOBILE_IMAGE_STYLES : IMAGE_STYLES;
 
   const pictures = images.map((img, index) => ({
     ...img,
@@ -102,7 +92,7 @@ const ImmersiveScrollGallery: React.FC<ImmersiveScrollGalleryProps> = ({
             style={{ scale, opacity: opacityImages, willChange: "transform, opacity" }}
             className="absolute flex items-center justify-center w-full h-full top-0"
           >
-            <div className={`relative ${imageStyles[index % imageStyles.length]}`}>
+            <div className={`relative ${IMAGE_STYLES[index % IMAGE_STYLES.length]}`}>
               <img
                 src={src}
                 alt={`Referenca ${index + 1}`}
