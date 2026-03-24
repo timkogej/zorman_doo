@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import React from "react";
 import { motion, useScroll, useTransform, MotionValue } from "framer-motion";
 
@@ -35,6 +35,16 @@ const IMAGE_STYLES = [
   "w-[15vw] h-[15vh] top-[22.5vh] left-[25vw]",
 ];
 
+const MOBILE_IMAGE_STYLES = [
+  "w-[55vw] h-[28vh]",
+  "w-[48vw] h-[24vh] -top-[24vh] left-[4vw]",
+  "w-[38vw] h-[44vh] -top-[12vh] -left-[36vw]",
+  "w-[48vw] h-[24vh] left-[12vw]",
+  "w-[38vw] h-[24vh] top-[24vh] left-[4vw]",
+  "w-[44vw] h-[22vh] top-[22vh] -left-[36vw]",
+  "w-[28vw] h-[18vh] top-[18vh] left-[20vw]",
+];
+
 const DEFAULT_QUOTE =
   "Od zasebnih domov do poslovnih prostorov — vsak projekt izvedemo z enako mero natančnosti in skrbjo za kakovost.";
 
@@ -44,22 +54,39 @@ const ImmersiveScrollGallery: React.FC<ImmersiveScrollGalleryProps> = ({
   quote = DEFAULT_QUOTE,
 }) => {
   const container = useRef<HTMLDivElement | null>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: container,
     offset: ["start start", "end end"],
   });
 
+  // Desktop scales
   const scale4 = useTransform(scrollYProgress, [0, 1], [1, 4]);
   const scale5 = useTransform(scrollYProgress, [0, 1], [1, 5]);
   const scale6 = useTransform(scrollYProgress, [0, 1], [1, 6]);
   const scale8 = useTransform(scrollYProgress, [0, 1], [1, 8]);
   const scale9 = useTransform(scrollYProgress, [0, 1], [1, 9]);
-  const opacityImages = useTransform(scrollYProgress, [0, 1], [1, 0]);
-  const opacityContent = useTransform(scrollYProgress, [0.6, 0.8], [0, 1]);
-  const scaleContent = useTransform(scrollYProgress, [0.6, 0.8], [0.8, 1]);
 
-  const scales = [scale4, scale5, scale6, scale5, scale6, scale8, scale9];
+  // Mobile scales — much less aggressive for smooth performance
+  const mScale15 = useTransform(scrollYProgress, [0, 1], [1, 1.5]);
+  const mScale2 = useTransform(scrollYProgress, [0, 1], [1, 2]);
+  const mScale25 = useTransform(scrollYProgress, [0, 1], [1, 2.5]);
+  const mScale3 = useTransform(scrollYProgress, [0, 1], [1, 3]);
+
+  const opacityImages = useTransform(scrollYProgress, [0.5, 0.85], [1, 0]);
+  const opacityContent = useTransform(scrollYProgress, [0.7, 0.88], [0, 1]);
+  const scaleContent = useTransform(scrollYProgress, [0.7, 0.88], [0.92, 1]);
+
+  const desktopScales = [scale4, scale5, scale6, scale5, scale6, scale8, scale9];
+  const mobileScales = [mScale2, mScale25, mScale3, mScale25, mScale3, mScale15, mScale2];
+  const scales = isMobile ? mobileScales : desktopScales;
+  const imageStyles = isMobile ? MOBILE_IMAGE_STYLES : IMAGE_STYLES;
 
   const pictures = images.map((img, index) => ({
     ...img,
@@ -72,17 +99,18 @@ const ImmersiveScrollGallery: React.FC<ImmersiveScrollGalleryProps> = ({
         {pictures.map(({ src, scale }, index) => (
           <motion.div
             key={index}
-            style={{ scale, opacity: opacityImages }}
+            style={{ scale, opacity: opacityImages, willChange: "transform, opacity" }}
             className="absolute flex items-center justify-center w-full h-full top-0"
           >
-            <div className={`relative ${IMAGE_STYLES[index % IMAGE_STYLES.length]}`}>
+            <div className={`relative ${imageStyles[index % imageStyles.length]}`}>
               <img
                 src={src}
                 alt={`Referenca ${index + 1}`}
                 className="object-cover w-full h-full"
+                loading="eager"
+                decoding="async"
                 style={index === 2 ? { objectPosition: "25% center" } : undefined}
               />
-              {/* Dark overlay to match site's dark aesthetic */}
               <div className="absolute inset-0 bg-black/20" />
             </div>
           </motion.div>
@@ -90,12 +118,10 @@ const ImmersiveScrollGallery: React.FC<ImmersiveScrollGalleryProps> = ({
 
         {/* Reveal text */}
         <motion.div
-          style={{ opacity: opacityContent, scale: scaleContent }}
-          className="w-full h-full flex items-center justify-center max-w-3xl mx-auto px-8 relative"
+          style={{ opacity: opacityContent, scale: scaleContent, willChange: "transform, opacity" }}
+          className="w-full h-full flex items-center justify-center px-6 sm:px-8 relative"
         >
-          <p
-            className="text-[#0a0a0a]/90 text-xl md:text-3xl lg:text-4xl font-light text-center leading-relaxed tracking-tight"
-          >
+          <p className="text-[#0a0a0a]/90 text-lg sm:text-2xl md:text-3xl lg:text-4xl font-light text-center leading-relaxed tracking-tight max-w-2xl lg:max-w-3xl mx-auto">
             {quote}
           </p>
         </motion.div>

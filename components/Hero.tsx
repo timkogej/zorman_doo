@@ -1,18 +1,25 @@
 "use client";
 
 import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { ArrowDown } from "lucide-react";
 
 export default function Hero() {
   const ref = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+  }, []);
+
   const { scrollYProgress } = useScroll({
     target: ref,
     offset: ["start start", "end start"],
   });
 
-  const y = useTransform(scrollYProgress, [0, 1], ["0%", "40%"]);
-  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+  const y = useTransform(scrollYProgress, [0, 1], isMobile ? ["0%", "0%"] : ["0%", "40%"]);
+  const opacity = useTransform(scrollYProgress, [0, isMobile ? 0.5 : 0.8], [1, 0]);
 
   const handleScroll = (href: string) => {
     const el = document.querySelector(href);
@@ -42,7 +49,7 @@ export default function Hero() {
 
       <motion.div
         style={{ y, opacity }}
-        className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8 text-center pt-24"
+        className="relative z-10 max-w-5xl mx-auto px-6 lg:px-8 text-center pt-16 sm:pt-20 lg:pt-24"
       >
         {/* Badge */}
         <motion.div

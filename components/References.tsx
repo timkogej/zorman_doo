@@ -7,7 +7,7 @@ export default function References() {
   return (
     <section id="reference" className="bg-white">
       {/* Section header */}
-      <div className="pt-24 lg:pt-32 pb-4">
+      <div className="pb-4">
         <div className="max-w-7xl mx-auto px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
