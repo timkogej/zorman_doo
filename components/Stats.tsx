@@ -6,7 +6,7 @@ const stats = [
   { value: "30+", label: "Let izkušenj" },
   { value: "500+", label: "Projektov" },
   { value: "8", label: "Strokovnjakov" },
-  { value: "6", label: "Certifikati" },
+  { value: "6", label: "Certifikatov" },
 ];
 
 const itemVariants = {

@@ -60,7 +60,7 @@ export default function Hero() {
         >
           <span className="w-6 h-px bg-accent" />
           <span className="text-accent text-xs font-semibold tracking-[0.3em] uppercase">
-            25+ let izkušenj
+            30+ let izkušenj
           </span>
           <span className="w-6 h-px bg-accent" />
         </motion.div>
