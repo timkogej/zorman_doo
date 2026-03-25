@@ -7,6 +7,8 @@ const partners = [
   { name: "Baumit", sub: null },
   { name: "JUB", sub: null },
   { name: "Demit", sub: null },
+  { name: "RÖFIX", sub: null },
+  { name: "Caparol", sub: null },
 ];
 
 const cardVariants = {
@@ -38,7 +40,7 @@ export default function Partners() {
           whileInView="whileInView"
           viewport={{ once: true }}
           transition={{ staggerChildren: 0.1 }}
-          className="grid grid-cols-2 lg:grid-cols-4 gap-3"
+          className="grid grid-cols-2 lg:grid-cols-3 gap-3"
         >
           {partners.map((partner, i) => (
             <motion.div

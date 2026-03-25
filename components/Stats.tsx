@@ -3,10 +3,10 @@
 import { motion } from "framer-motion";
 
 const stats = [
-  { value: "25+", label: "Let izkušenj" },
+  { value: "30+", label: "Let izkušenj" },
   { value: "500+", label: "Projektov" },
-  { value: "12", label: "Strokovnjakov" },
-  { value: "4", label: "Certifikati" },
+  { value: "8", label: "Strokovnjakov" },
+  { value: "6", label: "Certifikati" },
 ];
 
 const itemVariants = {

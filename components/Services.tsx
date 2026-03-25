@@ -17,7 +17,7 @@ const services = [
   {
     icon: Layers,
     title: "Fasadni sistemi",
-    desc: "Celotni sistemi Weber, Baumit, JUB, Demit. EPS, XPS, kamena volna, bakelita.",
+    desc: "Celotni sistemi Weber, Baumit, JUB, Demit, RÖFIX in Caparol.",
   },
 ];
 

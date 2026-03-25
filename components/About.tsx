@@ -4,9 +4,9 @@ import { motion } from "framer-motion";
 import { CheckCircle2 } from "lucide-react";
 
 const highlights = [
-  "ETICS sistemi — EPS, XPS, kamena volna, bakelita, pluta",
-  "Uradni partnerji Weber, Baumit, JUB in Demit",
-  "Certificirana ekipa 12-ih specializiranih delavcev",
+  "Izvedba kontaktnih fasad za novogradnje in prenove",
+  "Uradni partnerji Weber, Baumit, JUB, Demit, RÖFIX in Caparol",
+  "Certificirana ekipa 8-ih specializiranih delavcev",
   "Brezplačen ogled in svetovanje po meri",
 ];
 
@@ -41,9 +41,9 @@ export default function About() {
             <div className="w-12 h-px bg-accent mb-8" />
             <p className="text-[#555555] text-base leading-relaxed mb-8">
               Z našim delovanjem na področju zaključnih gradbenih del smo
-              pridobili več kot <span className="text-[#0a0a0a]">25 let</span>{" "}
+              pridobili več kot <span className="text-[#0a0a0a]">30 let</span>{" "}
               delovnih izkušenj. Gradbene projekte uspešno zaključujemo z ekipo{" "}
-              <span className="text-[#0a0a0a]">dvanajstih zaposlenih</span>, ki so
+              <span className="text-[#0a0a0a]">osmih zaposlenih</span>, ki so
               strokovno usposobljeni na različnih gradbenih področjih.
             </p>
             <p className="text-[#777777] text-sm leading-relaxed">

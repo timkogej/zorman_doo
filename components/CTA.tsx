@@ -72,7 +72,7 @@ export default function CTA() {
           </motion.a>
 
           <motion.a
-            href="mailto:info@fasaderstvo-zorman.si"
+            href="mailto:zorman.doo@telemach.net"
             variants={cardVariants}
             transition={{ duration: 0.4 }}
             whileHover={{ scale: 1.02 }}
@@ -86,7 +86,7 @@ export default function CTA() {
                 Email
               </p>
               <p className="text-[#0a0a0a] text-sm font-medium break-all">
-                info@fasaderstvo-zorman.si
+                zorman.doo@telemach.net
               </p>
             </div>
           </motion.a>

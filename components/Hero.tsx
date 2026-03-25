@@ -85,7 +85,7 @@ export default function Hero() {
           className="text-[#444444] text-base sm:text-lg max-w-2xl mx-auto mb-10 leading-relaxed"
         >
           Kakovostna izvedba fasadnih sistemov z vrhunskimi materiali Weber,
-          Baumit, JUB in Demit.
+          Baumit, JUB, Demit, RÖFIX in Caparol.
         </motion.p>
 
         {/* CTA Buttons */}
