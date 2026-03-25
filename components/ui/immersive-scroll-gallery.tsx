@@ -55,35 +55,35 @@ const ImmersiveScrollGallery: React.FC<ImmersiveScrollGalleryProps> = ({
     offset: ["start start", "end end"],
   });
 
-  // Desktop scales — original
-  const scale4 = useTransform(scrollYProgress, [0, 1], [1, 4]);
-  const scale5 = useTransform(scrollYProgress, [0, 1], [1, 5]);
-  const scale6 = useTransform(scrollYProgress, [0, 1], [1, 6]);
-  const scale8 = useTransform(scrollYProgress, [0, 1], [1, 8]);
-  const scale9 = useTransform(scrollYProgress, [0, 1], [1, 9]);
+  // Desktop: scale ustavi pri 0.55 (ko slike izginejo) — zoom se ne nadaljuje za besedilom
+  const scale4 = useTransform(scrollYProgress, [0, 0.55], [1, 4]);
+  const scale5 = useTransform(scrollYProgress, [0, 0.55], [1, 5]);
+  const scale6 = useTransform(scrollYProgress, [0, 0.55], [1, 6]);
+  const scale8 = useTransform(scrollYProgress, [0, 0.55], [1, 8]);
+  const scale9 = useTransform(scrollYProgress, [0, 0.55], [1, 9]);
 
-  // Mobile scales — smooth on phone GPU (max 2.5–3×)
-  const mScale2   = useTransform(scrollYProgress, [0, 1], [1, 2]);
-  const mScale25  = useTransform(scrollYProgress, [0, 1], [1, 2.5]);
-  const mScale3   = useTransform(scrollYProgress, [0, 1], [1, 3]);
+  // Mobile: scale ustavi pri 0.43 (ko slike izginejo)
+  const mScale2  = useTransform(scrollYProgress, [0, 0.43], [1, 2]);
+  const mScale25 = useTransform(scrollYProgress, [0, 0.43], [1, 2.5]);
+  const mScale3  = useTransform(scrollYProgress, [0, 0.43], [1, 3]);
 
-  // Desktop: slike izginejo pri 0.55, besedilo pride pri 0.62 → ni prekrivanja
+  // Desktop: slike izginejo pri 0.55, besedilo pride pri 0.62
   const dOpacityImages  = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
   const dOpacityContent = useTransform(scrollYProgress, [0.62, 0.78], [0, 1]);
   const dScaleContent   = useTransform(scrollYProgress, [0.62, 0.78], [0.85, 1]);
 
-  // Mobile: slike izginejo pri 0.43, besedilo pride pri 0.50 → ni prekrivanja
+  // Mobile: slike izginejo pri 0.43, besedilo pride pri 0.50
   const mOpacityImages  = useTransform(scrollYProgress, [0, 0.43], [1, 0]);
   const mOpacityContent = useTransform(scrollYProgress, [0.50, 0.65], [0, 1]);
   const mScaleContent   = useTransform(scrollYProgress, [0.50, 0.65], [0.9, 1]);
 
-  const desktopScales = [scale4, scale5, scale6, scale5, scale6, scale8, scale9];
-  const mobileScales  = [mScale2, mScale25, mScale3, mScale25, mScale3, mScale2, mScale25];
+  const desktopScales  = [scale4, scale5, scale6, scale5, scale6, scale8, scale9];
+  const mobileScales   = [mScale2, mScale25, mScale3, mScale25, mScale3, mScale2, mScale25];
 
-  const scales        = isMobile ? mobileScales  : desktopScales;
-  const opacityImages = isMobile ? mOpacityImages  : dOpacityImages;
+  const scales         = isMobile ? mobileScales   : desktopScales;
+  const opacityImages  = isMobile ? mOpacityImages  : dOpacityImages;
   const opacityContent = isMobile ? mOpacityContent : dOpacityContent;
-  const scaleContent  = isMobile ? mScaleContent  : dScaleContent;
+  const scaleContent   = isMobile ? mScaleContent   : dScaleContent;
 
   const pictures = images.map((img, index) => ({
     ...img,
@@ -91,10 +91,9 @@ const ImmersiveScrollGallery: React.FC<ImmersiveScrollGalleryProps> = ({
   }));
 
   return (
-    // h-[300vh] on mobile = more scroll room so text definitely appears
-    // h-[200vh] on desktop = original
     <div ref={container} className={`relative bg-white h-[300vh] md:h-[200vh] ${className}`}>
-      <div className="sticky top-0 h-[100vh] overflow-hidden">
+      {/* bg-white zagotavlja čisto ozadje ko slike izginejo */}
+      <div className="sticky top-0 h-[100vh] overflow-hidden bg-white">
         {pictures.map(({ src, scale }, index) => (
           <motion.div
             key={index}
@@ -115,12 +114,12 @@ const ImmersiveScrollGallery: React.FC<ImmersiveScrollGalleryProps> = ({
           </motion.div>
         ))}
 
-        {/* Reveal text */}
+        {/* Reveal text — absolute da je nad slikami, brez lastnega ozadja */}
         <motion.div
           style={{ opacity: opacityContent, scale: scaleContent }}
-          className="w-full h-full flex items-center justify-center max-w-3xl mx-auto px-8 relative"
+          className="absolute inset-0 flex items-center justify-center px-8 bg-white"
         >
-          <p className="text-[#0a0a0a]/90 text-xl md:text-3xl lg:text-4xl font-light text-center leading-relaxed tracking-tight">
+          <p className="text-[#0a0a0a]/90 text-xl md:text-3xl lg:text-4xl font-light text-center leading-relaxed tracking-tight max-w-3xl">
             {quote}
           </p>
         </motion.div>
