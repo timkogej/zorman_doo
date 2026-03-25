@@ -8,7 +8,7 @@ export default function Footer() {
           {/* Left: Logo + copyright */}
           <div className="flex items-center gap-3">
             <span className="text-[#777777] text-xs">
-              © 2026 Zorman d.o.o., Mojstrana
+              © 2026 Zorman d.o.o. Mojstrana
             </span>
           </div>
 

@@ -48,10 +48,10 @@ export default function Navigation() {
           >
             <div className="flex flex-col">
               <span className="text-[#0a0a0a] font-semibold text-sm tracking-widest uppercase leading-tight">
-                ZORMAN D.O.O.
+                ZORMAN D.O.O. MOJSTRANA
               </span>
               <span className="text-[#888888] text-[10px] tracking-[0.2em] uppercase leading-tight">
-                Fasaderstvo
+                Izdelava fasad
               </span>
             </div>
           </a>
