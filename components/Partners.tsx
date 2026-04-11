@@ -11,14 +11,12 @@ const partners = [
   { name: "Caparol", sub: null },
 ];
 
-const cardVariants = {
-  initial: { opacity: 0, y: 20 },
-  whileInView: { opacity: 1, y: 0 },
-};
+// Duplicate for seamless loop
+const duplicatedPartners = [...partners, ...partners];
 
 export default function Partners() {
   return (
-    <section id="sistemi" className="py-24 bg-white">
+    <section id="sistemi" className="py-24 bg-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -34,24 +32,32 @@ export default function Partners() {
             Uradni partnerji in certificirani izvajalci
           </p>
         </motion.div>
+      </div>
 
-        <motion.div
-          initial="initial"
-          whileInView="whileInView"
-          viewport={{ once: true }}
-          transition={{ staggerChildren: 0.1 }}
-          className="grid grid-cols-2 lg:grid-cols-3 gap-3"
+      {/* Infinite scroll strip */}
+      <div
+        className="w-full"
+        style={{
+          WebkitMaskImage:
+            "linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%)",
+          maskImage:
+            "linear-gradient(90deg, transparent 0%, black 10%, black 90%, transparent 100%)",
+        }}
+      >
+        <div
+          className="flex gap-4 w-max"
+          style={{
+            animation: "partners-scroll 22s linear infinite",
+          }}
         >
-          {partners.map((partner, i) => (
-            <motion.div
+          {duplicatedPartners.map((partner, i) => (
+            <div
               key={i}
-              variants={cardVariants}
-              transition={{ duration: 0.4 }}
-              whileHover={{ borderColor: "#c0c0c0" }}
-              className="group flex flex-col items-center justify-center bg-[#f5f5f5] border border-[#e0e0e0] px-8 py-6 rounded-sm cursor-default transition-all duration-200"
+              className="flex-shrink-0 flex flex-col items-center justify-center bg-[#f5f5f5] border border-[#e0e0e0] px-10 py-6 rounded-sm cursor-default transition-all duration-200 hover:border-[#c0c0c0] hover:scale-[1.04]"
+              style={{ minWidth: "160px" }}
             >
               <span
-                className="text-[#555555] group-hover:text-[#333333] font-semibold transition-colors duration-200"
+                className="text-[#555555] hover:text-[#333333] font-semibold transition-colors duration-200"
                 style={{ fontSize: "18px" }}
               >
                 {partner.name}
@@ -61,10 +67,17 @@ export default function Partners() {
                   {partner.sub}
                 </span>
               )}
-            </motion.div>
+            </div>
           ))}
-        </motion.div>
+        </div>
       </div>
+
+      <style>{`
+        @keyframes partners-scroll {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
+        }
+      `}</style>
     </section>
   );
 }
