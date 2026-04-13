@@ -25,6 +25,14 @@ export const metadata: Metadata = {
   },
 };
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  name: "Zorman d.o.o. Mojstrana",
+  url: "https://fasaderstvo-zorman.si",
+  logo: "https://fasaderstvo-zorman.si/icon.png",
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -32,6 +40,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="sl" className={inter.variable}>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
+        />
+      </head>
       <body className={`${inter.className} antialiased bg-white`}>
         {children}
         <CookieBanner />
