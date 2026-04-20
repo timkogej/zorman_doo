@@ -23,6 +23,9 @@ export const metadata: Metadata = {
     locale: "sl_SI",
     type: "website",
   },
+  verification: {
+    google: "8XuLBpYzRJtznFABUkYWxSJHEEU0CEQ06r0hP16q2KQ",
+  },
 };
 
 const organizationSchema = {
